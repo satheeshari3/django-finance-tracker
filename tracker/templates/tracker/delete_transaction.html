@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Transaction</title>
+</head>
+<body>
+    <h1>Confirm Delete </h1>
+    <p>Are you sure you want to delete the transaction:</p>
+    <p><strong>{{ transaction.date }} - ₹{{ transaction.amount }} - {{ transaction.category }}</strong></p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete it</button>
+        <a href="{% url 'list_transactions' %}">Cancel</a>
+    </form>
+</body>
+</html>

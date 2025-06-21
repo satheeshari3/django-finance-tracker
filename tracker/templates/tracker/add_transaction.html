@@ -1,0 +1,7 @@
+<h2>Add New Transaction</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add</button>
+</form>
+<a href="/">Back to list</a>
