@@ -3,6 +3,9 @@
 A simple and user-friendly personal finance tracker built with Django. This application allows users to add, view, and manage income and expense transactions,
 helping them understand their financial habits better.
 
+##feature to be added:
+--Authentication for the users
+
 ## Features
 
 - Add, view, edit, and delete transactions
