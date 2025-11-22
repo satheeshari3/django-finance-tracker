@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Finance Tracker</title>
+
+    <!-- Simple Modern Styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: rgb(218, 221, 222);
+        }
+
+        .navbar {
+            background: #2d3436;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        /* Summary Cards */
+        .summary-box {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            flex: 1;
+            background: white;
+            padding: 20px;
+            margin-right: 20px;
+            border-radius: 8px;
+            box-shadow: rgba(0,0,0,0.1) 0px 4px 10px;
+        }
+
+        .card:last-child {
+            margin-right: 0;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #2d3436;
+        }
+
+        .card p {
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        .income {
+            color: green;
+        }
+
+        .expense {
+            color: red;
+        }
+
+        .savings {
+            color: #0984e3;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            background: white;
+            border-collapse: collapse;
+            box-shadow: rgba(0,0,0,0.1) 0px 4px 10px;
+        }
+
+        th, td {
+            border: 1px solid #dcdde1;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #636e72;
+            color: white;
+        }
+
+        .actions a {
+            margin-right: 12px;
+            text-decoration: none;
+            color: #0984e3;
+        }
+
+        .add-btn {
+            background: #0984e3;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div>
+            <strong>Finance Tracker</strong>
+        </div>
+        <div>
+            Hi, {{ request.user.username }} |
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- SUMMARY SECTION -->
+        <div class="summary-box">
+
+            <div class="card">
+                <h3>Total Income</h3>
+                <p class="income">₹ {{ total_income }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Expense</h3>
+                <p class="expense">₹ {{ total_expense }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Net Savings</h3>
+                <p class="savings">₹ {{ net_savings }}</p>
+            </div>
+
+        </div>
+
+        <h2>Your Transactions</h2>
+        <a class="add-btn" href="{% url 'add_transaction' %}">+ Add Transaction</a>
+
+        <!-- Transactions Table -->
+        {% if transactions %}
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for t in transactions %}
+            <tr>
+                <td>{{ t.date }}</td>
+                <td>{{ t.category }}</td>
+                <td class="{% if t.category == 'Income' %}income{% else %}expense{% endif %}">
+                    ₹ {{ t.amount }}
+                </td>
+                <td>{{ t.description }}</td>
+                <td class="actions">
+                    <a href="{% url 'edit_transaction' t.id %}">Edit</a>
+                    <a href="{% url 'delete_transaction' t.id %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% else %}
+        <p>No transactions yet. Add one!</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>
